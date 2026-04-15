@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Trực Phòng Cute ✨</title>
+    <title>Lịch Trực Phòng 310 B10</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -246,10 +246,10 @@
 
     let masterList = []; // Danh sách gốc cố định
     let tasks = [
-        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác nha', currentIndex: 0, members: [] },
+        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác', currentIndex: 0, members: [] },
         { id: 'nhatren', className: 'task-nhatren', name: '🧹 Quét lau nhà trên', currentIndex: 0, members: [] },
-        { id: 'vesinh', className: 'task-vesinh', name: '🚽 Cọ nhà vệ sinh', currentIndex: 0, members: [] },
-        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Khử trùng nhà tắm', currentIndex: 0, members: [] },
+        { id: 'vesinh', className: 'task-vesinh', name: '🚽 Dọn vệ sinh', currentIndex: 0, members: [] },
+        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Dọn nhà tắm', currentIndex: 0, members: [] },
         { id: 'laynuoc', className: 'task-laynuoc', name: '🚰 Đi lấy nước uống', currentIndex: 0, members: [] }
     ];
 
@@ -290,10 +290,10 @@
                     <span class="label-denluot">Hôm nay tới lượt:</span>
                     <div class="current-person">${task.members[task.currentIndex]}</div>
                 </div>
-                <button class="btn-done" id="btn-done-${index}" onclick="nextTurn(${index})">Thổi bay nhiệm vụ! ✨</button>
+                <button class="btn-done" id="btn-done-${index}" onclick="nextTurn(${index})">Tuất tiếp theo ✨</button>
                 <button class="btn-swap" onclick="toggleSwap(${index})">Huhu, hôm nay bận đổi ca 🔄</button>
                 <div id="swap-${index}" class="swap-area">
-                    <label>Nhờ ai làm thay bây giờ? 🤔</label>
+                    <label>Chọn 1 tuất để thay🤔</label>
                     <select id="select-b-${index}">
                         ${task.members.map((m, i) => i !== task.currentIndex ? `<option value="${i}">${m}</option>` : '').join('')}
                     </select>

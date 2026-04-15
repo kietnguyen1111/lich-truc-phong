@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Trực Phòng Cute ✨</title>
+    <title>Lịch Trực Phòng</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -76,13 +76,7 @@
         .task-nhatam::before { background-color: #74b9ff; }
         .task-laynuoc::before { background-color: #ffeaa7; }
 
-        .task-card:hover {
-            transform: translateY(-3px); 
-        }
-
         .task-header {
-            display: flex;
-            align-items: center;
             font-size: 1.3em;
             font-weight: 700;
             color: #4a4a4a;
@@ -93,13 +87,11 @@
         .current-person-container {
             text-align: center;
             margin: 15px 0;
-            position: relative;
         }
         
         .label-denluot {
             font-size: 0.8em;
             color: #888;
-            margin-bottom: -5px;
             display: block;
         }
 
@@ -122,11 +114,6 @@
             font-family: 'Quicksand', sans-serif; 
             font-weight: 700; 
             transition: all 0.2s ease; 
-            outline: none;
-        }
-
-        button:active {
-            transform: scale(0.95); 
         }
 
         .btn-done { 
@@ -140,11 +127,8 @@
             margin-top: 10px;
         }
         
-        .btn-done:hover { 
-            background-color: #c3f1a2;
-            box-shadow: 0 2px 0px #96d36f;
-            transform: translateY(2px);
-        }
+        .btn-done:hover { transform: translateY(2px); box-shadow: 0 2px 0px #96d36f; }
+        .btn-done:disabled { background-color: #ccc; box-shadow: none; cursor: not-allowed; }
 
         .btn-swap { 
             background-color: #f1f2f6; 
@@ -155,11 +139,6 @@
             width: 100%; 
             font-size: 0.9em; 
         }
-        
-        .btn-swap:hover {
-            background-color: #dfe6e9;
-            color: #2d3436;
-        }
 
         .swap-area { 
             display: none; 
@@ -168,37 +147,14 @@
             padding: 15px; 
             border-radius: 15px; 
             border: 2px dashed #b2bec3; 
-            animation: slideDown 0.3s ease;
-        }
-        
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .swap-area label {
-            font-size: 0.9em;
-            color: #636e72;
-            display: block;
-            margin-bottom: 8px;
-            text-align: center;
         }
 
         select { 
             padding: 10px; 
             width: 100%; 
             border-radius: 10px; 
-            border: 2px solid #ddd; 
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1em;
-            background: #fff;
-            color: var(--text-color);
             margin-bottom: 10px;
-        }
-        
-        select:focus {
-            border-color: var(--primary-color);
-            outline: none;
+            font-family: 'Quicksand', sans-serif;
         }
 
         .btn-confirm-swap { 
@@ -206,31 +162,11 @@
             color: #844233; 
             padding: 9px; 
             border-radius: 10px; 
-            width: 100%; 
-            font-weight: bold; 
+            width: 100%;
             box-shadow: 0 3px 0px #e19584;
         }
-        
-        .btn-confirm-swap:hover {
-            background-color: #ffc2b4;
-            transform: translateY(1px);
-            box-shadow: 0 2px 0px #e19584;
-        }
 
-        .footer-note { 
-            font-size: 0.8em; 
-            color: #a0a0a0; 
-            text-align: center; 
-            margin-top: 30px; 
-            line-height: 1.4;
-            padding: 0 10px;
-        }
-
-        @media (max-width: 380px) {
-            .container { padding: 15px; }
-            h2 { font-size: 1.6em; }
-            .current-person { font-size: 1.4em; }
-        }
+        .footer-note { font-size: 0.8em; color: #a0a0a0; text-align: center; margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -238,32 +174,50 @@
 <div class="container">
     <h2>Lịch Trực Phòng</h2>
     <div id="app"></div>
-    <p class="footer-note">Cố lên các thím! Nhớ tick khi làm xong nha. Nếu đổi ca, hệ thống sẽ tự sắp xếp làm bù sau nè. ✨❤️</p>
+    <p class="footer-note">Ghi chú: Đổi ca chỉ có tác dụng trong vòng này. Khi quay lại lượt đầu tiên, thứ tự sẽ tự reset về mặc định! ✨</p>
 </div>
 
 <script>
-    // ĐÃ THAY LINK CỦA CẬU VÀO ĐÂY
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby_ia-LqATAZl_C5HGn9bHeugq9DKUVbKOZVW_B1IZKPhd9qOkmsMAxk4_bQ-QDrrs-fA/exec";
+    // LINK WEB APP CỦA CẬU ĐÃ ĐƯỢC THAY VÀO ĐÂY
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygl7alzSC4JZIR6Ha6WRthKy9Nvi2o0e4T3F5R2eEXMWaxtIZDBbwPlRU_wERIrLilMw/exec";
 
-    const initialMembers = [
-        "Đăng 👦🏻", "Hào 👦🏻", "Quân 👦🏻", "Kiệt 👦🏻", "Phi 👦🏻", 
-        "Vũ 👦🏻", "Quang 👦🏻", "Bách 👦🏻", "Việt 69 🍆", "Khiêm 👦🏻", "Việt 14 👶🏻"
-    ];
-    
-    let members = [...initialMembers];
-    
+    let masterList = [];
     let tasks = [
-        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác nha', currentIndex: 0 },
-        { id: 'nhatren', className: 'task-nhatren', name: '🧹 Quét lau nhà trên', currentIndex: 0 },
-        { id: 'vesinh', className: 'task-vesinh', name: '🚽 Cọ nhà vệ sinh', currentIndex: 0 },
-        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Khử trùng nhà tắm', currentIndex: 0 },
-        { id: 'laynuoc', className: 'task-laynuoc', name: '🚰 Đi lấy nước uống', currentIndex: 0 }
+        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác', currentIndex: 0, members: [] },
+        { id: 'nhatren', className: 'task-nhatren', name: '🧹 Quét lau nhà trên', currentIndex: 0, members: [] },
+        { id: 'vesinh', className: 'task-vesinh', name: '🚽 Cọ nhà vệ sinh', currentIndex: 0, members: [] },
+        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Dọn hà tắm', currentIndex: 0, members: [] },
+        { id: 'laynuoc', className: 'task-laynuoc', name: '🚰 Đi lấy nước uống', currentIndex: 0, members: [] }
     ];
+
+    async function loadData() {
+        const app = document.getElementById('app');
+        app.innerHTML = '<h3 style="text-align:center; color:#ff85a2;">Đang đồng bộ dữ liệu... ⏳</h3>';
+        try {
+            const response = await fetch(SCRIPT_URL);
+            const data = await response.json();
+            masterList = data.master;
+            tasks.forEach((t, i) => {
+                t.currentIndex = parseInt(data.indices[i]);
+                t.members = data.taskOrders[i];
+            });
+            render();
+        } catch (error) {
+            app.innerHTML = '<h3 style="text-align:center; color:red;">Lỗi kết nối App Script!</h3>';
+        }
+    }
+
+    async function syncData() {
+        const payload = {
+            indices: tasks.map(t => t.currentIndex),
+            taskOrders: tasks.map(t => t.members)
+        };
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    }
 
     function render() {
         const app = document.getElementById('app');
         app.innerHTML = '';
-
         tasks.forEach((task, index) => {
             const card = document.createElement('div');
             card.className = `task-card ${task.className}`;
@@ -271,119 +225,64 @@
                 <div class="task-header">${task.name}</div>
                 <div class="current-person-container">
                     <span class="label-denluot">Hôm nay tới lượt:</span>
-                    <div class="current-person">${members[task.currentIndex]}</div>
+                    <div class="current-person">${task.members[task.currentIndex]}</div>
                 </div>
                 <button class="btn-done" id="btn-done-${index}" onclick="nextTurn(${index})">Thổi bay nhiệm vụ! ✨</button>
-                <button class="btn-swap" onclick="toggleSwap(${index})">Huhu, hôm nay bận đổi ca 🔄</button>
+                <button class="btn-swap" onclick="toggleSwap(${index})">Đổi người làm thay vòng này 🔄</button>
                 <div id="swap-${index}" class="swap-area">
-                    <label>Nhờ ai làm thay bây giờ? 🤔</label>
+                    <label style="font-size:0.8em; color:#666;">Chọn người làm thay cho ${task.members[task.currentIndex]}:</label>
                     <select id="select-b-${index}">
-                        ${members.map((m, i) => i !== task.currentIndex ? `<option value="${i}">${m}</option>` : '').join('')}
+                        ${task.members.map((m, i) => i !== task.currentIndex ? `<option value="${i}">${m}</option>` : '').join('')}
                     </select>
-                    <button class="btn-confirm-swap" id="btn-swap-${index}" onclick="executeSwap(${index})">Chốt đổi! (Nhớ trả nợ nha)</button>
+                    <button class="btn-confirm-swap" id="btn-swap-${index}" onclick="executeSwap(${index})">Xác nhận đổi ca</button>
                 </div>
             `;
             app.appendChild(card);
         });
     }
 
-    // Tải dữ liệu từ Google Sheets khi mở web
-    async function loadData() {
-        const app = document.getElementById('app');
-        app.innerHTML = '<h3 style="text-align:center; color:#ff85a2;">Đang đồng bộ dữ liệu... ⏳</h3>';
-        
-        try {
-            const response = await fetch(SCRIPT_URL);
-            const data = await response.json();
-            
-            // Nếu sheet có dữ liệu thì ghi đè lên
-            if (data.members && data.members.length === 11 && data.members[0] !== "") {
-                members = data.members;
-            }
-            if (data.indices && data.indices.length === 5) {
-                tasks.forEach((t, i) => t.currentIndex = parseInt(data.indices[i]) || 0);
-            }
-        } catch (error) {
-            console.error("Lỗi:", error);
-            // Nếu lỗi mạng, vẫn render giao diện mặc định
-        }
-        render();
-    }
-
-    // Gửi dữ liệu mới lên Google Sheets
-    async function syncData() {
-        try {
-            const payload = {
-                members: members,
-                indices: tasks.map(t => t.currentIndex)
-            };
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(payload)
-            });
-        } catch (error) {
-            console.error("Lỗi đồng bộ:", error);
-            alert("Mạng yếu, chưa lưu được lên hệ thống chung đâu nha!");
-        }
-    }
-
     async function nextTurn(taskIndex) {
-        // Đổi trạng thái nút thành Đang lưu để tránh bấm 2 lần
         const btn = document.getElementById(`btn-done-${taskIndex}`);
         btn.innerText = "Đang lưu... ⏳";
         btn.disabled = true;
 
-        tasks[taskIndex].currentIndex = (tasks[taskIndex].currentIndex + 1) % 11;
-        
-        // Cập nhật giao diện lập tức
-        render();
-        
-        // Đồng bộ ngầm lên Google Sheets
-        await syncData();
-    }
+        let nextIdx = (tasks[taskIndex].currentIndex + 1) % 11;
+        tasks[taskIndex].currentIndex = nextIdx;
 
-    function toggleSwap(taskIndex) {
-        const area = document.getElementById(`swap-${taskIndex}`);
-        const isHidden = area.style.display === 'none' || area.style.display === '';
-        
-        document.querySelectorAll('.swap-area').forEach(el => el.style.display = 'none');
-        
-        if (isHidden) {
-            area.style.display = 'block';
+        // LOGIC RESET: Nếu quay lại vị trí 0 (Đăng) -> Trả thứ tự về gốc
+        if (nextIdx === 0) {
+            tasks[taskIndex].members = [...masterList];
         }
+
+        render();
+        await syncData();
     }
 
     async function executeSwap(taskIndex) {
         const personAIndex = tasks[taskIndex].currentIndex;
         const personBIndex = parseInt(document.getElementById(`select-b-${taskIndex}`).value);
-
-        if (isNaN(personBIndex)) {
-            alert("Chọn người đổi ca cái coi! ✨");
-            return;
-        }
-
-        const nameA = members[personAIndex].replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '').trim();
-        const nameB = members[personBIndex].replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '').trim();
-
-        // Đổi trạng thái nút thành Đang lưu
+        
         const btn = document.getElementById(`btn-swap-${taskIndex}`);
         btn.innerText = "Đang lưu... ⏳";
         btn.disabled = true;
 
-        // Hoán đổi vị trí
-        let temp = members[personAIndex];
-        members[personAIndex] = members[personBIndex];
-        members[personBIndex] = temp;
+        // Hoán đổi vị trí TRONG MẢNG RIÊNG của task đó
+        let temp = tasks[taskIndex].members[personAIndex];
+        tasks[taskIndex].members[personAIndex] = tasks[taskIndex].members[personBIndex];
+        tasks[taskIndex].members[personBIndex] = temp;
 
-        // Cập nhật giao diện lập tức
         render();
-        
-        // Đồng bộ lên Google Sheets rồi mới báo xong
         await syncData();
-        alert(`🎉 Xong! ${nameB} sẽ làm thay hôm nay. ${nameA} nhớ làm bù vào lượt sau của ${nameB} nha!`);
+        alert("Đã đổi ca thành công cho vòng này!");
     }
 
-    // Chạy tải dữ liệu ngay khi mở trang
+    function toggleSwap(taskIndex) {
+        const area = document.getElementById(`swap-${taskIndex}`);
+        const isHidden = area.style.display === 'none' || area.style.display === '';
+        document.querySelectorAll('.swap-area').forEach(el => el.style.display = 'none');
+        if (isHidden) area.style.display = 'block';
+    }
+
     loadData();
 </script>
 

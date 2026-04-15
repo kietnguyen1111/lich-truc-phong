@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lịch Trực Phòng</title>
+    <title>Lịch Trực Phòng Cute ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -76,7 +76,13 @@
         .task-nhatam::before { background-color: #74b9ff; }
         .task-laynuoc::before { background-color: #ffeaa7; }
 
+        .task-card:hover {
+            transform: translateY(-3px); 
+        }
+
         .task-header {
+            display: flex;
+            align-items: center;
             font-size: 1.3em;
             font-weight: 700;
             color: #4a4a4a;
@@ -87,11 +93,13 @@
         .current-person-container {
             text-align: center;
             margin: 15px 0;
+            position: relative;
         }
         
         .label-denluot {
             font-size: 0.8em;
             color: #888;
+            margin-bottom: -5px;
             display: block;
         }
 
@@ -114,6 +122,11 @@
             font-family: 'Quicksand', sans-serif; 
             font-weight: 700; 
             transition: all 0.2s ease; 
+            outline: none;
+        }
+
+        button:active {
+            transform: scale(0.95); 
         }
 
         .btn-done { 
@@ -127,8 +140,11 @@
             margin-top: 10px;
         }
         
-        .btn-done:hover { transform: translateY(2px); box-shadow: 0 2px 0px #96d36f; }
-        .btn-done:disabled { background-color: #ccc; box-shadow: none; cursor: not-allowed; }
+        .btn-done:hover { 
+            background-color: #c3f1a2;
+            box-shadow: 0 2px 0px #96d36f;
+            transform: translateY(2px);
+        }
 
         .btn-swap { 
             background-color: #f1f2f6; 
@@ -139,6 +155,11 @@
             width: 100%; 
             font-size: 0.9em; 
         }
+        
+        .btn-swap:hover {
+            background-color: #dfe6e9;
+            color: #2d3436;
+        }
 
         .swap-area { 
             display: none; 
@@ -147,14 +168,37 @@
             padding: 15px; 
             border-radius: 15px; 
             border: 2px dashed #b2bec3; 
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .swap-area label {
+            font-size: 0.9em;
+            color: #636e72;
+            display: block;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         select { 
             padding: 10px; 
             width: 100%; 
             border-radius: 10px; 
-            margin-bottom: 10px;
+            border: 2px solid #ddd; 
             font-family: 'Quicksand', sans-serif;
+            font-size: 1em;
+            background: #fff;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
         }
 
         .btn-confirm-swap { 
@@ -162,11 +206,31 @@
             color: #844233; 
             padding: 9px; 
             border-radius: 10px; 
-            width: 100%;
+            width: 100%; 
+            font-weight: bold; 
             box-shadow: 0 3px 0px #e19584;
         }
+        
+        .btn-confirm-swap:hover {
+            background-color: #ffc2b4;
+            transform: translateY(1px);
+            box-shadow: 0 2px 0px #e19584;
+        }
 
-        .footer-note { font-size: 0.8em; color: #a0a0a0; text-align: center; margin-top: 30px; }
+        .footer-note { 
+            font-size: 0.8em; 
+            color: #a0a0a0; 
+            text-align: center; 
+            margin-top: 30px; 
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        @media (max-width: 380px) {
+            .container { padding: 15px; }
+            h2 { font-size: 1.6em; }
+            .current-person { font-size: 1.4em; }
+        }
     </style>
 </head>
 <body>
@@ -174,19 +238,18 @@
 <div class="container">
     <h2>Lịch Trực Phòng</h2>
     <div id="app"></div>
-    <p class="footer-note">Ghi chú: Đổi ca chỉ có tác dụng trong vòng này. Khi quay lại lượt đầu tiên, thứ tự sẽ tự reset về mặc định! ✨</p>
+    <p class="footer-note">Cố lên các thím! Nhớ tick khi làm xong nha. Nếu đổi ca, hệ thống sẽ tự sắp xếp làm bù sau nè. ✨❤️</p>
 </div>
 
 <script>
-    // LINK WEB APP CỦA CẬU ĐÃ ĐƯỢC THAY VÀO ĐÂY
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbygl7alzSC4JZIR6Ha6WRthKy9Nvi2o0e4T3F5R2eEXMWaxtIZDBbwPlRU_wERIrLilMw/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3YZ-s4wd530genFCT6-v28jJrFEcJpgi7L-OppFaVS0FRx4_8QxlYIDVPv0LEd8Xbwg/exec";
 
-    let masterList = [];
+    let masterList = []; // Danh sách gốc cố định
     let tasks = [
-        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác', currentIndex: 0, members: [] },
+        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác nha', currentIndex: 0, members: [] },
         { id: 'nhatren', className: 'task-nhatren', name: '🧹 Quét lau nhà trên', currentIndex: 0, members: [] },
         { id: 'vesinh', className: 'task-vesinh', name: '🚽 Cọ nhà vệ sinh', currentIndex: 0, members: [] },
-        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Dọn hà tắm', currentIndex: 0, members: [] },
+        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Khử trùng nhà tắm', currentIndex: 0, members: [] },
         { id: 'laynuoc', className: 'task-laynuoc', name: '🚰 Đi lấy nước uống', currentIndex: 0, members: [] }
     ];
 
@@ -203,7 +266,7 @@
             });
             render();
         } catch (error) {
-            app.innerHTML = '<h3 style="text-align:center; color:red;">Lỗi kết nối App Script!</h3>';
+            alert("Không thể tải dữ liệu. Kiểm tra lại link Web App!");
         }
     }
 
@@ -228,13 +291,13 @@
                     <div class="current-person">${task.members[task.currentIndex]}</div>
                 </div>
                 <button class="btn-done" id="btn-done-${index}" onclick="nextTurn(${index})">Thổi bay nhiệm vụ! ✨</button>
-                <button class="btn-swap" onclick="toggleSwap(${index})">Đổi người làm thay vòng này 🔄</button>
+                <button class="btn-swap" onclick="toggleSwap(${index})">Huhu, hôm nay bận đổi ca 🔄</button>
                 <div id="swap-${index}" class="swap-area">
-                    <label style="font-size:0.8em; color:#666;">Chọn người làm thay cho ${task.members[task.currentIndex]}:</label>
+                    <label>Nhờ ai làm thay bây giờ? 🤔</label>
                     <select id="select-b-${index}">
                         ${task.members.map((m, i) => i !== task.currentIndex ? `<option value="${i}">${m}</option>` : '').join('')}
                     </select>
-                    <button class="btn-confirm-swap" id="btn-swap-${index}" onclick="executeSwap(${index})">Xác nhận đổi ca</button>
+                    <button class="btn-confirm-swap" id="btn-swap-${index}" onclick="executeSwap(${index})">Chốt đổi! (Chỉ áp dụng vòng này)</button>
                 </div>
             `;
             app.appendChild(card);
@@ -249,7 +312,7 @@
         let nextIdx = (tasks[taskIndex].currentIndex + 1) % 11;
         tasks[taskIndex].currentIndex = nextIdx;
 
-        // LOGIC RESET: Nếu quay lại vị trí 0 (Đăng) -> Trả thứ tự về gốc
+        // NẾU QUAY LẠI VỊ TRÍ ĐẦU TIÊN (HẾT 1 VÒNG) -> RESET THỨ TỰ VỀ GỐC
         if (nextIdx === 0) {
             tasks[taskIndex].members = [...masterList];
         }
@@ -266,14 +329,14 @@
         btn.innerText = "Đang lưu... ⏳";
         btn.disabled = true;
 
-        // Hoán đổi vị trí TRONG MẢNG RIÊNG của task đó
+        // Chỉ hoán đổi trong danh sách tạm của task này
         let temp = tasks[taskIndex].members[personAIndex];
         tasks[taskIndex].members[personAIndex] = tasks[taskIndex].members[personBIndex];
         tasks[taskIndex].members[personBIndex] = temp;
 
         render();
         await syncData();
-        alert("Đã đổi ca thành công cho vòng này!");
+        alert("Đã đổi ca cho vòng này. Vòng sau sẽ tự động quay về thứ tự cũ!");
     }
 
     function toggleSwap(taskIndex) {

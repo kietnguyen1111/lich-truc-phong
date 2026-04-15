@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Trực Phòng Cute ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f9ff; /* Xanh da trời cực nhạt */
+            --primary-color: #ff85a2; /* Hồng đậm cute */
+            --secondary-color: #b8e994; /* Xanh mint */
+            --accent-color: #ffeaa7; /* Vàng nhạt */
+            --text-color: #2d3436;
+            --card-bg: #ffffff;
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: var(--bg-color); 
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNhY2NlNzgiIGZpbGwtb3BhY2l0eT0iMC4xNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6bTIwIDIwaDIwdjIwSDIWMjB6TTAgMjBoMjB2MjBIMFYyMHoyMCAwaDIwdjIwSDIwVjB6Ii8+PC9nPjwvZz48L3N2Zz4=');
+            /* Họa tiết nền caro nhạt */
+            padding: 10px; 
+            color: var(--text-color); 
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { 
+            max-width: 450px; 
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9); 
+            padding: 25px; 
+            border-radius: 30px; /* Bo góc cực lớn */
+            box-shadow: 0 10px 30px rgba(255, 133, 162, 0.2); /* Đổ bóng màu hồng nhạt */
+            border: 4px solid #fff; /* Viền trắng dày */
+            backdrop-filter: blur(5px);
+        }
+
+        h2 { 
+            text-align: center; 
+            color: var(--primary-color); 
+            font-size: 2em;
+            margin-bottom: 25px; 
+            text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        h2::after {
+            content: '💖';
+            font-size: 0.7em;
+            position: absolute;
+            top: -10px;
+            right: 50px;
+        }
+
+        .task-card { 
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05); 
+            border: 2px solid #f1f2f6;
+            transition: transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Màu viền trên khác nhau cho mỗi task */
+        .task-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 8px;
+        }
+        .task-rac::before { background-color: #fab1a0; }
+        .task-nhatren::before { background-color: #81ecec; }
+        .task-vesinh::before { background-color: #fd79a8; }
+        .task-nhatam::before { background-color: #74b9ff; }
+        .task-laynuoc::before { background-color: #ffeaa7; }
+
+        .task-card:hover {
+            transform: translateY(-3px); /* Nhấc nhẹ khi di chuột */
+        }
+
+        .task-header {
+            display: flex;
+            align-items: center;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #4a4a4a;
+            margin-bottom: 15px;
+            margin-top: 5px;
+        }
+
+        .current-person-container {
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .label-denluot {
+            font-size: 0.8em;
+            color: #888;
+            margin-bottom: -5px;
+            display: block;
+        }
+
+        .current-person { 
+            font-size: 1.8em; 
+            font-weight: 700; 
+            color: #fff; 
+            background: linear-gradient(45deg, #ff85a2, #ffacb7); /* Gradient hồng */
+            padding: 10px 25px; 
+            border-radius: 50px; /* Bo tròn như cục kẹo */
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(255, 133, 162, 0.4);
+            border: 3px solid #fff;
+            margin-top: 5px;
+        }
+
+        button { 
+            border: none; 
+            cursor: pointer; 
+            font-family: 'Quicksand', sans-serif; 
+            font-weight: 700; 
+            transition: all 0.2s ease; 
+            outline: none;
+        }
+
+        button:active {
+            transform: scale(0.95); /* Lún xuống khi bấm */
+        }
+
+        .btn-done { 
+            background-color: var(--secondary-color); 
+            color: #407324; 
+            padding: 12px; 
+            border-radius: 15px; 
+            width: 100%; 
+            font-size: 1.1em; 
+            box-shadow: 0 4px 0px #96d36f; /* Đổ bóng kiểu 3D khối */
+            margin-top: 10px;
+        }
+        
+        .btn-done:hover { 
+            background-color: #c3f1a2;
+            box-shadow: 0 2px 0px #96d36f;
+            transform: translateY(2px);
+        }
+
+        .btn-swap { 
+            background-color: #f1f2f6; 
+            color: #7f8c8d; 
+            padding: 8px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            width: 100%; 
+            font-size: 0.9em; 
+        }
+        
+        .btn-swap:hover {
+            background-color: #dfe6e9;
+            color: #2d3436;
+        }
+
+        .swap-area { 
+            display: none; 
+            margin-top: 15px; 
+            background: var(--bg-color); 
+            padding: 15px; 
+            border-radius: 15px; 
+            border: 2px dashed #b2bec3; 
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .swap-area label {
+            font-size: 0.9em;
+            color: #636e72;
+            display: block;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        select { 
+            padding: 10px; 
+            width: 100%; 
+            border-radius: 10px; 
+            border: 2px solid #ddd; 
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1em;
+            background: #fff;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn-confirm-swap { 
+            background-color: #fab1a0; /* Màu cam pastel */
+            color: #844233; 
+            padding: 9px; 
+            border-radius: 10px; 
+            width: 100%; 
+            font-weight: bold; 
+            box-shadow: 0 3px 0px #e19584;
+        }
+        
+        .btn-confirm-swap:hover {
+            background-color: #ffc2b4;
+            transform: translateY(1px);
+            box-shadow: 0 2px 0px #e19584;
+        }
+
+        .footer-note { 
+            font-size: 0.8em; 
+            color: #a0a0a0; 
+            text-align: center; 
+            margin-top: 30px; 
+            line-height: 1.4;
+            padding: 0 10px;
+        }
+
+        /* Responsive cho điện thoại nhỏ */
+        @media (max-width: 380px) {
+            .container { padding: 15px; }
+            h2 { font-size: 1.6em; }
+            .current-person { font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Lịch Trực Phòng</h2>
+    <div id="app"></div>
+    <p class="footer-note">Cố lên các thím! Nhớ tick khi làm xong nha. Nếu đổi ca, hệ thống sẽ tự sắp xếp làm bù sau nè. ✨❤️</p>
+</div>
+
+<script>
+    // Danh sách 11 người theo thứ tự yêu cầu
+    const initialMembers = [
+        "Đăng 👦🏻", "Hào 👦🏻", "Quân 👦🏻", "Kiệt 👦🏻", "Phi 👦🏻", 
+        "Vũ 👦🏻", "Quang 👦🏻", "Bách 👦🏻", "Việt 69 🍆", "Khiêm 👦🏻", "Việt 14 👶🏻"
+    ];
+    
+    // Thêm emoji cho vui nhộn, bạn có thể xóa nếu không thích
+    
+    let members = [...initialMembers];
+    
+    // Thêm class name để CSS tô màu riêng
+    let tasks = [
+        { id: 'rac', className: 'task-rac', name: '🗑️ Đi đổ rác nha', currentIndex: 0 },
+        { id: 'nhatren', className: 'task-nhatren', name: '🧹 Quét lau nhà trên', currentIndex: 0 },
+        { id: 'vesinh', className: 'task-vesinh', name: '🚽 Cọ nhà vệ sinh', currentIndex: 0 },
+        { id: 'nhatam', className: 'task-nhatam', name: '🚿 Khử trùng nhà tắm', currentIndex: 0 },
+        { id: 'laynuoc', className: 'task-laynuoc', name: '🚰 Đi lấy nước uống', currentIndex: 0 }
+    ];
+
+    // Khôi phục dữ liệu (dùng key mới v3 để tránh xung đột bản cũ)
+    const savedTasks = localStorage.getItem('roomTasks_v3');
+    const savedMembers = localStorage.getItem('roomMembers_v3');
+    
+    if (savedTasks) tasks = JSON.parse(savedTasks);
+    if (savedMembers) members = JSON.parse(savedMembers);
+
+    function save() {
+        localStorage.setItem('roomTasks_v3', JSON.stringify(tasks));
+        localStorage.setItem('roomMembers_v3', JSON.stringify(members));
+    }
+
+    function render() {
+        const app = document.getElementById('app');
+        app.innerHTML = '';
+
+        tasks.forEach((task, index) => {
+            const card = document.createElement('div');
+            card.className = `task-card ${task.className}`;
+            card.innerHTML = `
+                <div class="task-header">${task.name}</div>
+                <div class="current-person-container">
+                    <span class="label-denluot">Hôm nay tới lượt:</span>
+                    <div class="current-person">${members[task.currentIndex]}</div>
+                </div>
+                <button class="btn-done" onclick="nextTurn(${index})">Thổi bay nhiệm vụ! ✨</button>
+                <button class="btn-swap" onclick="toggleSwap(${index})">Huhu, hôm nay bận đổi ca 🔄</button>
+                <div id="swap-${index}" class="swap-area">
+                    <label>Nhờ ai làm thay bây giờ? 🤔</label>
+                    <select id="select-b-${index}">
+                        ${members.map((m, i) => i !== task.currentIndex ? `<option value="${i}">${m}</option>` : '').join('')}
+                    </select>
+                    <button class="btn-confirm-swap" onclick="executeSwap(${index})">Chốt đổi! (Nhớ trả nợ nha)</button>
+                </div>
+            `;
+            app.appendChild(card);
+        });
+    }
+
+    function nextTurn(taskIndex) {
+        // Hiệu ứng pháo hoa giấy nhỏ khi hoàn thành (tùy chọn)
+        // Nếu muốn thêm, cần thư viện ngoài. Ở đây tạm thời alert cute
+        
+        tasks[taskIndex].currentIndex = (tasks[taskIndex].currentIndex + 1) % 11;
+        save();
+        render();
+    }
+
+    function toggleSwap(taskIndex) {
+        const area = document.getElementById(`swap-${taskIndex}`);
+        const isHidden = area.style.display === 'none' || area.style.display === '';
+        
+        // Đóng hết các khu vực đổi ca khác trước khi mở cái mới
+        document.querySelectorAll('.swap-area').forEach(el => el.style.display = 'none');
+        
+        if (isHidden) {
+            area.style.display = 'block';
+        }
+    }
+
+    function executeSwap(taskIndex) {
+        const personAIndex = tasks[taskIndex].currentIndex;
+        const personBIndex = parseInt(document.getElementById(`select-b-${taskIndex}`).value);
+
+        if (isNaN(personBIndex)) {
+            alert("Chọn người đổi ca cái coi! ✨");
+            return;
+        }
+
+        // Tạo tên không có emoji để thông báo cho đỡ rối
+        const nameA = members[personAIndex].replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '').trim();
+        const nameB = members[personBIndex].replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF]/g, '').trim();
+
+        // Hoán đổi vị trí
+        let temp = members[personAIndex];
+        members[personAIndex] = members[personBIndex];
+        members[personBIndex] = temp;
+
+        alert(`🎉 Xong! ${nameB} sẽ làm thay hôm nay. ${nameA} nhớ làm bù vào lượt sau của ${nameB} nha!`);
+        
+        save();
+        render();
+    }
+
+    render();
+</script>
+
+</body>
+</html>
